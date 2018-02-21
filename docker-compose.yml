@@ -1,0 +1,32 @@
+version: '2'
+
+services:
+    nginx:
+        image: mydocker/nginx:latest
+        ports:
+            - "8080:8080"
+        volumes:
+         - ./application:/var/www/html
+        networks:
+         - appnet
+    php:
+        image: mydocker/php:latest
+        volumes:
+         - ./application:/var/www/html
+        networks:
+         - appnet
+    db:
+        image: mysql:5.7
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: mydb
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+        volumes:
+         - data:/var/lib/mysql
+networks:
+    appnet:
+        driver: "bridge"
+volumes:
+    data:
+        driver: "local"
